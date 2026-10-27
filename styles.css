@@ -26,6 +26,11 @@ html {
   --color-muted: #657089;
   --color-accent: #5b5ce2;
   --color-accent-dark: #4142b8;
+  --color-accent-soft: #f0f0ff;
+  --color-header: rgb(255 255 255 / 92%);
+  --color-border: rgb(23 32 51 / 8%);
+  --color-border-subtle: rgb(23 32 51 / 6%);
+  --color-border-strong: rgb(23 32 51 / 12%);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -34,6 +39,24 @@ html {
   --space-6: 2rem;
   --radius: 1rem;
   --max-width: 1100px;
+}
+
+/* Reveal a clear skip link only when keyboard users focus it. */
+.skip-link {
+  position: fixed;
+  z-index: 20;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  transform: translateY(calc(-100% - var(--space-3)));
+  border-radius: var(--space-2);
+  background: var(--color-text);
+  color: var(--color-surface);
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 /* Apply the site-wide font, text rendering, and background. */
@@ -132,8 +155,8 @@ body > header {
   flex-wrap: wrap;
   gap: var(--space-5);
   padding: var(--space-3) max(var(--space-4), calc((100vw - var(--max-width)) / 2));
-  border-bottom: 1px solid rgb(23 32 51 / 8%);
-  background: rgb(255 255 255 / 92%);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-header);
   box-shadow: 0 8px 24px rgb(23 32 51 / 5%);
   backdrop-filter: blur(14px);
 }
@@ -173,7 +196,7 @@ nav.is-collapsible .menu-toggle {
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  border: 1px solid rgb(23 32 51 / 12%);
+  border: 1px solid var(--color-border-strong);
   border-radius: var(--space-2);
   background: var(--color-surface);
   color: var(--color-text);
@@ -198,7 +221,7 @@ nav.is-collapsible ul {
   flex-direction: column;
   gap: var(--space-1);
   padding: var(--space-2);
-  border: 1px solid rgb(23 32 51 / 8%);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-surface);
   box-shadow: 0 12px 28px rgb(23 32 51 / 12%);
@@ -216,7 +239,7 @@ nav.is-collapsible ul a {
 
 nav.is-collapsible ul a:hover,
 nav.is-collapsible ul a:focus-visible {
-  background: #f0f0ff;
+  background: var(--color-accent-soft);
 }
 
 /* Keep navigation labels understated until hovered or focused. */
@@ -243,7 +266,7 @@ main {
 main section {
   margin-block: var(--space-6);
   padding: clamp(var(--space-5), 5vw, calc(var(--space-6) * 1.5));
-  border: 1px solid rgb(23 32 51 / 6%);
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius);
   background: var(--color-surface);
   box-shadow: 0 12px 32px rgb(23 32 51 / 4%);
@@ -295,9 +318,9 @@ main section p {
 /* Style each skill as an accent-colored badge. */
 #skills li {
   padding: var(--space-2) var(--space-4);
-  border: 1px solid rgb(91 92 226 / 16%);
+  border: 1px solid var(--color-border-subtle);
   border-radius: 999px;
-  background: #f0f0ff;
+  background: var(--color-accent-soft);
   color: var(--color-accent-dark);
   font-size: 0.95rem;
   font-weight: 600;
@@ -323,7 +346,7 @@ main section p {
   gap: var(--space-3);
   min-height: 210px;
   padding: var(--space-5);
-  border: 1px solid rgb(23 32 51 / 8%);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius);
   background: var(--color-surface);
   transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
@@ -332,7 +355,7 @@ main section p {
 /* Lift project cards and add depth on hover. */
 #projects article:hover {
   transform: translateY(-5px);
-  border-color: rgb(91 92 226 / 28%);
+  border-color: var(--color-accent);
   box-shadow: 0 16px 32px rgb(23 32 51 / 10%);
 }
 
@@ -354,7 +377,7 @@ main section p {
 /* Distinguish the footer while keeping its content aligned to the page. */
 body > footer {
   padding: var(--space-5);
-  border-top: 1px solid rgb(23 32 51 / 8%);
+  border-top: 1px solid var(--color-border);
   color: var(--color-muted);
   text-align: center;
 }
@@ -419,19 +442,35 @@ body > footer {
   }
 }
 
+/* Override the shared palette when the visitor prefers a dark appearance. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --color-bg: #101522;
+    --color-surface: #1c2435;
+    --color-text: #f3f5fc;
+    --color-muted: #b7c1d5;
+    --color-accent: #b3b5ff;
+    --color-accent-dark: #c2c3ff;
+    --color-accent-soft: #30334f;
+    --color-header: rgb(16 21 34 / 94%);
+    --color-border: rgb(243 245 252 / 14%);
+    --color-border-subtle: rgb(243 245 252 / 10%);
+    --color-border-strong: rgb(243 245 252 / 20%);
+  }
+}
+
 /* Respect visitors who prefer reduced motion. */
 @media (prefers-reduced-motion: reduce) {
-  /* Disable smooth scrolling for visitors who reduce motion. */
+  /* Disable smooth scrolling and animated transitions for reduced motion. */
   html {
     scroll-behavior: auto;
   }
 
-  /* Minimize transitions and animations for reduced-motion preferences. */
   *,
   *::before,
   *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    transition: none !important;
+    animation: none !important;
   }
 }
