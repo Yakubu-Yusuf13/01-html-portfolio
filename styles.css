@@ -87,6 +87,11 @@ svg {
   max-width: 100%;
 }
 
+/* Keep image dimensions fluid on narrow screens. */
+img {
+  height: auto;
+}
+
 /* Keep form controls consistent with the system font. */
 input,
 button,
@@ -124,8 +129,9 @@ body > header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: var(--space-5);
-  padding: var(--space-4) max(var(--space-5), calc((100vw - var(--max-width)) / 2));
+  padding: var(--space-3) max(var(--space-4), calc((100vw - var(--max-width)) / 2));
   border-bottom: 1px solid rgb(23 32 51 / 8%);
   background: rgb(255 255 255 / 92%);
   box-shadow: 0 8px 24px rgb(23 32 51 / 5%);
@@ -144,9 +150,73 @@ nav ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: var(--space-2) var(--space-5);
+  gap: var(--space-2) var(--space-4);
   padding: 0;
   list-style: none;
+}
+
+/* Place the mobile menu button at the right edge of the header. */
+nav {
+  position: relative;
+}
+
+nav.is-collapsible .menu-toggle {
+  display: inline-flex;
+}
+
+/* Draw a compact hamburger icon from three accessible decorative bars. */
+.menu-toggle {
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid rgb(23 32 51 / 12%);
+  border-radius: var(--space-2);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  width: 1.15rem;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+/* Hide the menu only after JavaScript enables the collapsible control. */
+nav.is-collapsible ul {
+  position: absolute;
+  z-index: 11;
+  top: calc(100% + var(--space-3));
+  right: 0;
+  display: none;
+  min-width: 12rem;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border: 1px solid rgb(23 32 51 / 8%);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: 0 12px 28px rgb(23 32 51 / 12%);
+}
+
+nav.is-collapsible.is-open ul {
+  display: flex;
+}
+
+nav.is-collapsible ul a {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--space-2);
+}
+
+nav.is-collapsible ul a:hover,
+nav.is-collapsible ul a:focus-visible {
+  background: #f0f0ff;
 }
 
 /* Keep navigation labels understated until hovered or focused. */
@@ -177,7 +247,7 @@ main section {
   border-radius: var(--radius);
   background: var(--color-surface);
   box-shadow: 0 12px 32px rgb(23 32 51 / 4%);
-  scroll-margin-top: 7rem;
+  scroll-margin-top: 8rem;
 }
 
 /* Add consistent breathing room below section titles. */
@@ -193,24 +263,21 @@ main section p {
 /* Give the About section a balanced text-and-image layout. */
 #about {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.65fr);
+  grid-template-columns: 1fr;
   align-items: center;
   gap: var(--space-5) var(--space-6);
 }
 
-/* Span the About heading across its text and image columns. */
+/* Keep the About heading and portrait in the single-column mobile flow. */
 #about h2 {
-  grid-column: 1 / -1;
-  margin-bottom: calc(var(--space-5) * -1);
+  grid-column: 1;
+  margin-bottom: 0;
 }
 
-/* Give the profile image a contained, cropped portrait treatment. */
+/* Keep the portrait fluid and aligned with the About copy. */
 #about img {
-  grid-column: 2;
-  grid-row: 2;
   width: min(100%, 300px);
-  aspect-ratio: 1;
-  justify-self: end;
+  justify-self: start;
   border-radius: calc(var(--radius) * 1.5);
   background: var(--color-bg);
   object-fit: cover;
@@ -239,7 +306,7 @@ main section p {
 /* Lay out project articles as responsive cards with a subtle lift on hover. */
 #projects {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-5);
 }
 
@@ -292,38 +359,63 @@ body > footer {
   text-align: center;
 }
 
-/* Stack the About content and keep the header usable on narrow screens. */
-@media (max-width: 640px) {
-  /* Stack header items so navigation has room on small screens. */
+/* Add tablet layout density and reveal the full horizontal navigation. */
+@media (min-width: 768px) {
   body > header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-4) var(--space-5);
+    flex-wrap: nowrap;
+    padding-block: var(--space-4);
   }
 
-  /* Keep the mobile navigation compact and left-aligned. */
-  nav ul {
-    justify-content: flex-start;
-    gap: var(--space-2) var(--space-4);
+  nav.is-collapsible .menu-toggle {
+    display: none;
   }
 
-  /* Use one column for the About copy and portrait. */
+  nav.is-collapsible ul,
+  nav.is-collapsible.is-open ul {
+    position: static;
+    display: flex;
+    min-width: 0;
+    flex-direction: row;
+    gap: var(--space-2) var(--space-5);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  nav.is-collapsible ul a {
+    padding: 0;
+  }
+
   #about {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 0.65fr);
   }
 
-  /* Return the About heading to the single-column flow. */
   #about h2 {
-    grid-column: 1;
-    margin-bottom: 0;
+    grid-column: 1 / -1;
+    margin-bottom: calc(var(--space-5) * -1);
   }
 
-  /* Place the portrait below the About copy on narrow screens. */
   #about img {
-    grid-column: 1;
-    grid-row: auto;
-    justify-self: start;
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+  }
+
+  #projects {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+/* Increase whitespace and card spacing for wide desktop screens. */
+@media (min-width: 1024px) {
+  main {
+    padding-top: calc(var(--space-6) * 1.5);
+  }
+
+  main section {
+    margin-block: calc(var(--space-6) * 1.5);
+    padding: calc(var(--space-6) * 1.5);
   }
 }
 

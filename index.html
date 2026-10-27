@@ -9,12 +9,25 @@
     >
     <title>Your Name | Developer Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
   </head>
   <body>
     <header>
       <h1>Your Name</h1>
       <nav aria-label="Main navigation">
-        <ul>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+          hidden
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul id="primary-navigation">
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#projects">Projects</a></li>
