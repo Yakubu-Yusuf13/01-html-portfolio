@@ -1,25 +1,83 @@
-/* Modern CSS reset */
+/* Modern reset: keep element sizing predictable and remove browser spacing. */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* Let each component define its own spacing. */
 * {
   margin: 0;
 }
 
+/* Keep text sizing consistent across browsers and honor the viewport height. */
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
+/* Set the portfolio palette, spacing scale, and shared layout tokens. */
+:root {
+  color-scheme: light;
+  --color-bg: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-text: #172033;
+  --color-muted: #657089;
+  --color-accent: #5b5ce2;
+  --color-accent-dark: #4142b8;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --radius: 1rem;
+  --max-width: 1100px;
+}
+
+/* Apply the site-wide font, text rendering, and background. */
 body {
   min-height: 100vh;
-  line-height: 1.5;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Keep the portfolio name prominent with fluid sizing. */
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+}
+
+/* Scale section headings fluidly across viewport sizes. */
+h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.35rem);
+  line-height: 1.2;
+}
+
+/* Set a readable fluid size for project titles. */
+h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  line-height: 1.3;
+}
+
+/* Prevent long words and media from overflowing their containers. */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* Keep media responsive and prevent it from exceeding its parent. */
 img,
 picture,
 video,
@@ -29,6 +87,7 @@ svg {
   max-width: 100%;
 }
 
+/* Keep form controls consistent with the system font. */
 input,
 button,
 textarea,
@@ -36,12 +95,251 @@ select {
   font: inherit;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
+/* Keep keyboard focus visible and give links a clear hover treatment. */
+a {
+  color: var(--color-accent-dark);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
+/* Indicate interactive links on hover. */
+a:hover {
+  color: var(--color-accent);
+}
+
+/* Make keyboard focus obvious for links and buttons. */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--space-1);
+}
+
+/* Pin the site identity and navigation to the top in a flexible header. */
+body > header {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-4) max(var(--space-5), calc((100vw - var(--max-width)) / 2));
+  border-bottom: 1px solid rgb(23 32 51 / 8%);
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 8px 24px rgb(23 32 51 / 5%);
+  backdrop-filter: blur(14px);
+}
+
+/* Style the portfolio name as the header's compact wordmark. */
+body > header h1 {
+  color: var(--color-text);
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+  white-space: nowrap;
+}
+
+/* Arrange navigation links in a clean, wrapping row. */
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+/* Keep navigation labels understated until hovered or focused. */
+nav a {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Emphasize the navigation link under the pointer. */
+nav a:hover {
+  color: var(--color-accent);
+}
+
+/* Center the main content and add comfortable vertical rhythm. */
+main {
+  width: min(100%, var(--max-width));
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-5) calc(var(--space-6) * 2);
+}
+
+/* Separate each content area and provide consistent section spacing. */
+main section {
+  margin-block: var(--space-6);
+  padding: clamp(var(--space-5), 5vw, calc(var(--space-6) * 1.5));
+  border: 1px solid rgb(23 32 51 / 6%);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  box-shadow: 0 12px 32px rgb(23 32 51 / 4%);
+  scroll-margin-top: 7rem;
+}
+
+/* Add consistent breathing room below section titles. */
+main section h2 {
+  margin-bottom: var(--space-5);
+}
+
+/* Use muted color for explanatory copy. */
+main section p {
+  color: var(--color-muted);
+}
+
+/* Give the About section a balanced text-and-image layout. */
+#about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.65fr);
+  align-items: center;
+  gap: var(--space-5) var(--space-6);
+}
+
+/* Span the About heading across its text and image columns. */
+#about h2 {
+  grid-column: 1 / -1;
+  margin-bottom: calc(var(--space-5) * -1);
+}
+
+/* Give the profile image a contained, cropped portrait treatment. */
+#about img {
+  grid-column: 2;
+  grid-row: 2;
+  width: min(100%, 300px);
+  aspect-ratio: 1;
+  justify-self: end;
+  border-radius: calc(var(--radius) * 1.5);
+  background: var(--color-bg);
+  object-fit: cover;
+}
+
+/* Display the skills list as flexible pill badges. */
+#skills ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+
+/* Style each skill as an accent-colored badge. */
+#skills li {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid rgb(91 92 226 / 16%);
+  border-radius: 999px;
+  background: #f0f0ff;
+  color: var(--color-accent-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Lay out project articles as responsive cards with a subtle lift on hover. */
+#projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+
+/* Keep the Projects heading above every grid card. */
+#projects h2 {
+  grid-column: 1 / -1;
+}
+
+/* Keep each project card's title, copy, and link aligned. */
+#projects article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: 210px;
+  padding: var(--space-5);
+  border: 1px solid rgb(23 32 51 / 8%);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+/* Lift project cards and add depth on hover. */
+#projects article:hover {
+  transform: translateY(-5px);
+  border-color: rgb(91 92 226 / 28%);
+  box-shadow: 0 16px 32px rgb(23 32 51 / 10%);
+}
+
+/* Let project descriptions fill space above the card link. */
+#projects article p {
+  flex: 1;
+}
+
+/* Keep contact methods easy to scan and interact with. */
+#contact ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+/* Distinguish the footer while keeping its content aligned to the page. */
+body > footer {
+  padding: var(--space-5);
+  border-top: 1px solid rgb(23 32 51 / 8%);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* Stack the About content and keep the header usable on narrow screens. */
+@media (max-width: 640px) {
+  /* Stack header items so navigation has room on small screens. */
+  body > header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+  }
+
+  /* Keep the mobile navigation compact and left-aligned. */
+  nav ul {
+    justify-content: flex-start;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  /* Use one column for the About copy and portrait. */
+  #about {
+    grid-template-columns: 1fr;
+  }
+
+  /* Return the About heading to the single-column flow. */
+  #about h2 {
+    grid-column: 1;
+    margin-bottom: 0;
+  }
+
+  /* Place the portrait below the About copy on narrow screens. */
+  #about img {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+}
+
+/* Respect visitors who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable smooth scrolling for visitors who reduce motion. */
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Minimize transitions and animations for reduced-motion preferences. */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
